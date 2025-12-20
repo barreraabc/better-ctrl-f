@@ -9,26 +9,11 @@ import path from 'path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), crx({ manifest })],
-  build: {
-    rollupOptions: {
-      input: {
-        content: 'src/content/content.ts',
-        contentStyle: 'src/content/content.css',
-      },
-      output: {
-        entryFileNames: (chunkInfo) => {
-          if (chunkInfo.name === 'content') {
-            return 'content/content.js';
-          }
-          return 'assets/[name]-[hash].js';
-        },
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'content.css') {
-            return 'content/content.css';
-          }
-          return 'assets/[name]-[hash][extname]';
-        },
-      },
+  server: {
+    hmr: {
+      host: 'localhost', // Ensure this matches where your client tries to connect
+      port: 5173,      // Default Vite dev server port, adjust if different
+      clientPort: 5173, // Use this if the client sees a different port for HMR
     },
   },
   resolve: {
